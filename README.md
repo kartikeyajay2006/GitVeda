@@ -1,129 +1,109 @@
 <div align="center">
-  <img src="./public/assets/images/gitveda-banner.png" width="100%" alt="GitVeda Banner" />
 
-  # 🌌 GitVeda
-  ### The Neural Path to Git Mastery
+<img src="./public/assets/images/gitveda-banner.png" width="100%" alt="GitVeda banner">
 
-  [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-  [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-  [![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
-  [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-  [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=for-the-badge)](CONTRIBUTING.md)
+# GitVeda
 
-  **GitVeda** is a high-fidelity, gamified learning platform that transforms the complex landscape of Git versions and workflows into an immersive, mission-driven experience.
+**Learn Git by playing it: 30 levels, a terminal in your browser, and an AI tutor when you get stuck.**
+
+[![Live demo](https://img.shields.io/badge/live_demo-play_now-22c55e?style=flat-square&logo=vercel&logoColor=white)](https://git-veda-phi.vercel.app)
+[![React](https://img.shields.io/badge/React_18-Vite-61DAFB?style=flat-square&logo=react&logoColor=black)](https://vitejs.dev/)
+[![Firebase](https://img.shields.io/badge/Firebase-auth_+_progress-FFCA28?style=flat-square&logo=firebase&logoColor=black)](https://firebase.google.com/)
+[![OpenAI](https://img.shields.io/badge/AI_hints-OpenAI-412991?style=flat-square&logo=openai&logoColor=white)](https://platform.openai.com/)
+[![Vitest](https://img.shields.io/badge/tests-Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev/)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](CONTRIBUTING.md)
+
+**[▶ Play GitVeda](https://git-veda-phi.vercel.app)** · [Curriculum](#the-curriculum) · [How it works](#how-it-works) · [Run locally](#run-locally)
+
 </div>
 
 ---
 
-## 🛰️ Neural Core Architecture
+## Why
 
-Visualize the flow of knowledge from basic initialization to advanced multi-branch orchestration.
+Most people learn Git by memorising commands they are afraid to run. The first time they need `rebase`, `reflog` or `bisect` is usually during a real emergency, on a real repository.
+
+GitVeda gives you a **safe sandbox repository** inside the browser. You type real commands, see what they do to the repository, earn XP, and only move on once you can do it yourself.
+
+## Features
+
+| | |
+|---|---|
+| 🖥️ **In-browser Git terminal** | A simulated Git engine tracks the working tree, staging area, commits and branches as you type. Nothing to install, and nothing you can break. |
+| 🗺️ **30-level campaign** | Each level is a real scenario ("inspect unstaged changes before you commit") with a command to run and a concept check. |
+| 🎯 **Three tiers** | Easy, Medium and Hard levels award 80, 120 and 170 XP. |
+| 🤖 **AI hints** | Stuck? A serverless function asks OpenAI for a hint that nudges you toward the answer without giving it away. |
+| 🏆 **Leaderboard and profile** | XP, streaks and progress saved to Firebase, ranked against other learners. |
+| 📒 **Cheat notes** | A one-page reference of every command you have unlocked. |
+| 🔁 **Endgame** | *Final Revision*, a rapid-fire recap of all 30 commands for +500 XP, and *Practice Arena* for unlimited drills. |
+
+## The curriculum
+
+| Tier | Levels | Commands you master |
+|---|---|---|
+| **Easy** · foundations | 1–10 | `init` · `status` · `add` · `commit` · `log --oneline` · `branch` · `checkout -b` · `switch` · `diff` · `restore` |
+| **Medium** · collaboration | 11–20 | `remote add` · `push -u` · `pull --rebase` · `fetch --all` · `merge` · `rebase` · `stash push` · `stash pop` · `cherry-pick` · `reset --soft` |
+| **Hard** · recovery and mastery | 21–30 | `reset --hard` · `reflog` · `bisect start / bad / good` · `rebase -i` · `commit --amend` · `clean -fd` · `tag -a` · `push --tags` |
+
+## How it works
 
 ```mermaid
-graph TD
-    A[User Profile] --> B{Level Selection}
-    B -->|Level 1-10| C[Foundational Git]
-    B -->|Level 11-20| D[Collaborative Workflows]
-    B -->|Level 21-30| E[Master Orchestration]
-    
-    C --> F[Live Terminal Missions]
-    D --> F
-    E --> F
-    
-    F --> G{Mission Control}
-    G -->|Validate| H[XP & Progress]
-    G -->|Request| I[AI Insights Engine]
-    
-    H --> A
-    
-    style A fill:#1e1b4b,stroke:#6366f1,stroke-width:2px,color:#fff
-    style G fill:#1e1b4b,stroke:#06b6d4,stroke-width:2px,color:#fff
-    style I fill:#312e81,stroke:#6366f1,stroke-dasharray: 5 5,color:#fff
+flowchart LR
+    T[Terminal input] --> E[GitEngine<br/>simulated repo state]
+    E --> V{Level validator}
+    V -- correct --> X[XP + progress<br/>Firebase]
+    V -- stuck --> H[/api/ai-hint<br/>serverless/]
+    H --> O[(OpenAI)]
+    X --> LB[Leaderboard]
 ```
 
----
+- **State, not string matching.** `GitEngine` keeps a model of the repository, and reducers (`gitEngineReducer`, `challengeReducer`, `userProgressReducer`) move the game forward.
+- **The API key stays secret.** AI hints go through a Vercel serverless function in `api/ai-hint.js`, so the OpenAI key never reaches the browser.
+- **Fast first load.** Pages are lazy-loaded and the expensive views are memoised.
 
-## 🔥 Key Features
+## Tech stack
 
-<table width="100%">
-  <tr>
-    <td width="50%" valign="top">
-      <h4>🕹️ Gamified Missions</h4>
-      <p>Master 30 levels of increasing complexity, from <code>git init</code> to <code>bisect</code> and interactive rebasing.</p>
-    </td>
-    <td width="50%" valign="top">
-      <h4>💻 Live Terminal</h4>
-      <p>Execute real Git commands in a persistent, reactive terminal environment with instant verification.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <h4>🧠 Neural AI Insights</h4>
-      <p>Stuck on a mission? Our AI Hint Engine analyzes your current state and provides contextual, cryptic guidance.</p>
-    </td>
-    <td width="50%" valign="top">
-      <h4>📊 Mission Control</h4>
-      <p>Track your streaks, XP, and mission objectives through a premium, glassmorphic dashboard interface.</p>
-    </td>
-  </tr>
-</table>
+| Layer | Technology |
+|---|---|
+| UI | React 18, Vite, React Router, Framer Motion, Sass, Lucide icons, Recharts |
+| State | React Context and reducers, custom hooks (`useGitEngine`, `useTerminal`, `useChallenge`, `useLeaderboard`) |
+| Backend | Firebase Auth and Firestore, a Vercel serverless function for AI hints |
+| Testing | Vitest |
 
----
+## Run locally
 
-## 🏆 Level Campaign
-
-| Phase | Milestone | Mastery Scope |
-| :--- | :--- | :--- |
-| **I** | 🌱 **The Sprouting** | Local repo setup, staging, and atomic commits. |
-| **II** | 🌿 **The Branching** | Conflict resolution, remote sync, and stashing. |
-| **III** | 🌳 **The Orchestration** | Reflogs, interactive rebasing, and surgical cherry-picking. |
-
----
-
-## ✨ Neural Showcase
-
-Experience the project in its full 3D glory. Our interactive showcase highlights the underlying neural architecture that powers the GitVeda platform.
-
-> [!TIP]
-> Check out the [Interactive 3D Showcase](SHOWCASE.html) to see the Neural Core in action!
-
----
-
-## 🚀 Quick Start
-
-### 1. Initialize
 ```bash
-git clone https://github.com/kartikeya2006jay/GitVeda.git
+git clone https://github.com/kartikeyajay2006/GitVeda.git
 cd GitVeda
-```
-
-### 2. Prepare Environment
-```bash
 npm install
-cp .env.example .env
-```
-*Fill in your Firebase credentials in the `.env` file.*
-
-### 3. Launch Core
-```bash
-npm run dev
+cp .env.example .env     # add your Firebase config; OPENAI_API_KEY is only needed for AI hints
+npm run dev              # http://localhost:5173
 ```
 
----
+| Script | |
+|---|---|
+| `npm run dev` | Start the dev server |
+| `npm run build` | Production build |
+| `npm run preview` | Preview the build |
+| `npm test` | Run tests with Vitest |
 
-## 🛠️ Tech Stack
+## Project structure
 
-- **Architect**: React 18 & Vite
-- **Styling**: Premium SCSS with Glassmorphic Principles
-- **State**: Context API + Neural Reducers
-- **Identity**: Firebase Auth
-- **Persistence**: Cloud Firestore
+```text
+src/
+  services/gitSimulator/GitEngine.js   the simulated Git repository
+  data/levels.js                       30 levels + endgame tracks
+  reducers/                            git engine, challenge and progress state
+  hooks/                               useGitEngine, useTerminal, useChallenge, useLeaderboard, ...
+  pages/                               Home, Learn, Challenge, Leaderboard, Profile, CheatNotes, Auth
+api/ai-hint.js                         serverless AI hint endpoint
+```
 
----
+## Contributing
 
-<div align="center">
-  <p>Built with ❤️ by <b>Kartikeya Yadav</b></p>
-  <br />
-  <img src="https://img.shields.io/badge/Made%20with-Passion-red?style=for-the-badge" alt="Made with Passion" />
-  <img src="https://img.shields.io/badge/Built%20for-The%20Future-blue?style=for-the-badge" alt="Built for the Future" />
-</div>
+New levels are welcome. Add a blueprint to `src/data/levels.js` and see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Author
+
+Built by **[Kartikeya Yadav](https://github.com/kartikeyajay2006)**.
+[LinkedIn](https://www.linkedin.com/in/kartikeya2006/) · [Portfolio](https://kartikeya-portfolio-rx7w.vercel.app/)
